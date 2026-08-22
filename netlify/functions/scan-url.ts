@@ -24,37 +24,52 @@ export const handler: Handler = async (event) => {
       return {
         statusCode: 500,
         body: JSON.stringify({
-          error: "VIRUSTOTAL_API_KEY is not configured",
+          error: "VIRUSTOTAL_API_KEY is missing",
         }),
       };
     }
 
-    const response = await fetch(
+    // Send URL to VirusTotal
+    const form = new URLSearchParams();
+    form.append("url", url);
+
+    const vtResponse = await fetch(
       "https://www.virustotal.com/api/v3/urls",
       {
         method: "POST",
         headers: {
           "x-apikey": apiKey,
-          "Content-Type": "application/x-www-form-urlencoded",
+          "content-type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({ url }).toString(),
+        body: form.toString(),
       }
     );
 
-    const data = await response.json();
+    if (!vtResponse.ok) {
+      const errorText = await vtResponse.text();
+
+      return {
+        statusCode: vtResponse.status,
+        body: JSON.stringify({
+          error: "VirusTotal request failed",
+          details: errorText,
+        }),
+      };
+    }
+
+    const result = await vtResponse.json();
 
     return {
-      statusCode: response.status,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+      statusCode: 200,
+      body: JSON.stringify(result),
     };
   } catch (error) {
+    console.error(error);
+
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Server error",
+        error: "Internal server error",
       }),
     };
   }
