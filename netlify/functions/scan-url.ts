@@ -107,6 +107,17 @@ export const handler: Handler = async (event) => {
       harmless +
       undetected;
 
+    // Calculate security score out of 100
+    const riskDetections = malicious + suspicious;
+
+    const score =
+      total > 0
+        ? Math.max(
+            0,
+            Math.round(100 - (riskDetections / total) * 100)
+          )
+        : 0;
+
     const safeToProceed =
       malicious === 0 && suspicious === 0;
 
@@ -117,12 +128,15 @@ export const handler: Handler = async (event) => {
       },
       body: JSON.stringify({
         url,
+
         verdict:
           malicious > 0
             ? "malicious"
             : suspicious > 0
             ? "suspicious"
             : "safe",
+
+        score,
 
         stats: {
           malicious,
