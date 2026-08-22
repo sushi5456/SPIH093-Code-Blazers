@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-950 text-slate-300 antialiased font-sans;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  ::selection {
+    @apply bg-accent-500/30 text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-400 via-accent-300 to-purple-400 bg-clip-text text-transparent;
+  }
+  .text-gradient-blue-purple {
+    @apply bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent;
+  }
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.06];
+  }
+  .glass-strong {
+    @apply bg-white/[0.05] backdrop-blur-2xl border border-white/[0.08];
+  }
+  .glow-accent {
+    box-shadow: 0 0 40px -10px rgba(34, 204, 238, 0.45);
+  }
+  .glow-purple {
+    box-shadow: 0 0 40px -10px rgba(168, 85, 247, 0.4);
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(34, 204, 238, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(34, 204, 238, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .radial-fade {
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 30%, transparent 75%);
+  }
+  .shimmer-text {
+    background: linear-gradient(90deg, #64748b 25%, #cff9fe 50%, #64748b 75%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #05070d;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2030;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #252c3d;
+}
+
+/* Focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid rgba(34, 204, 238, 0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
